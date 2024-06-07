@@ -79,15 +79,15 @@ About images: `width` and `height` define the size in pixels that images in mess
 
 ### As a React component
 
-Install the [npm package](https://npmjs.com/rasa-webchat):
 ```bash
-npm install rasa-webchat
+npm install @osapiens/rasa-webchat
 ```
 
 Then:
 
 ```javascript
-import Widget from 'rasa-webchat';
+import Widget from "@osapiens/rasa-webchat"
+import "@osapiens/rasa-webchat/module/main.css" //styles needed to render widget properly
 
 function CustomWidget = () => {
   return (
