@@ -3,9 +3,23 @@
 const path = require('path');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { version } = require('./package.json');
 
 module.exports = [{
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: 'css/mini-extract',
+          chunks: 'all',
+          enforce: true
+        }
+      }
+    }
+  },
   // entry: ['babel-polyfill', './index.js'],
   entry: './umd.js',
   output: {
@@ -37,8 +51,8 @@ module.exports = [{
       {
         test: /\.scss$/,
         use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
+          MiniCssExtractPlugin.loader,
+          'css-loader',
           {
             loader: 'sass-loader',
             options: {
@@ -49,7 +63,7 @@ module.exports = [{
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.(jpg|png|gif|svg|woff|ttf|eot)$/,
@@ -59,8 +73,25 @@ module.exports = [{
       }
     ]
   },
-  plugins: [new CleanWebpackPlugin(['lib'])]
+  plugins: [
+    new CleanWebpackPlugin(['lib']),
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
+  ]
 }, {
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: 'css/mini-extract',
+          chunks: 'all',
+          enforce: true
+        }
+      }
+    }
+  },
   entry: './index.js',
   externals: {
     react: {
@@ -107,8 +138,8 @@ module.exports = [{
       {
         test: /\.scss$/,
         use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
+          MiniCssExtractPlugin.loader,
+          'css-loader',
           {
             loader: 'sass-loader',
             options: {
@@ -119,7 +150,7 @@ module.exports = [{
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.(jpg|png|gif|svg|woff|ttf|eot)$/,
@@ -129,6 +160,11 @@ module.exports = [{
       }
     ]
   },
-  plugins: [new CleanWebpackPlugin(['module'])]
+  plugins: [
+    new CleanWebpackPlugin(['lib']),
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
+  ]
 }
 ];
