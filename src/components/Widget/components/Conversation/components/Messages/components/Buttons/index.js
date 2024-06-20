@@ -39,20 +39,20 @@ class Buttons extends PureComponent {
     chooseReply(payload, title, id);
   }
 
-  renderButtons(message, buttons, persit) {
-    const { isLast, linkTarget, separateButtons
-    } = this.props;
+  renderButtons(message, buttons) {
+    const { linkTarget, separateButtons} = this.props;
     const { userTextColor, userBackgroundColor } = this.context;
+
     const buttonStyle = {
       color: userTextColor,
       backgroundColor: userBackgroundColor,
       borderColor: userBackgroundColor
     };
+
     return (
       <div>
         <Message message={message} />
         {separateButtons && (<div className="rw-separator" />) }
-        {(isLast || persit) && (
           <div className="rw-replies">
             {buttons.map((reply, index) => {
               if (reply.get('type') === 'web_url') {
@@ -84,7 +84,6 @@ class Buttons extends PureComponent {
               );
             })}
           </div>
-        )}
       </div>
     );
   }
@@ -96,17 +95,21 @@ class Buttons extends PureComponent {
       getChosenReply,
       id
     } = this.props;
+
     const chosenReply = getChosenReply(id);
     if (message.get('quick_replies') !== undefined) {
       const buttons = message.get('quick_replies');
+      
       if (chosenReply) {
         return <Message message={message} />;
       }
-      return this.renderButtons(message, buttons, false);
+
+      return this.renderButtons(message, buttons);
     } else if (message.get('buttons') !== undefined) {
       const buttons = message.get('buttons');
-      return this.renderButtons(message, buttons, true);
+      return this.renderButtons(message, buttons);
     }
+
     return <Message message={message} />;
   }
 }
